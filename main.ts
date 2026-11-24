@@ -17,6 +17,13 @@ function main(): void {
       `entry must be 1-${MAX_CHARS} characters, got ${text.length}`,
     );
   }
+  // The pitch is one sentence: a single line ending in punctuation.
+  if (/[\r\n]/.test(text)) {
+    throw new Error("entry must be a single line");
+  }
+  if (!/[.!?]$/.test(text)) {
+    throw new Error("entry must end with sentence punctuation");
+  }
   const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
   mkdirSync(outDir, { recursive: true });
   writeFileSync(join(outDir, "entry.txt"), text, "utf8");
